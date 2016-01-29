@@ -357,7 +357,6 @@ static __unused NSString *MPURLEncode(NSString *s)
             self.shownNotifications = [NSMutableSet set];
             self.decideResponseCached = NO;
             self.variants = [NSSet set];
-            self.eventBindings = [NSSet set];
         }
         self.distinctId = distinctId;
         self.people.distinctId = distinctId;
