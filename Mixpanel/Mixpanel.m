@@ -352,6 +352,13 @@ static __unused NSString *MPURLEncode(NSString *s)
         return;
     }
     dispatch_async(self.serialQueue, ^{
+        if (distinctId != self.distinctId) {
+            self.shownSurveyCollections = [NSMutableSet set];
+            self.shownNotifications = [NSMutableSet set];
+            self.decideResponseCached = NO;
+            self.variants = [NSSet set];
+            self.eventBindings = [NSSet set];
+        }
         self.distinctId = distinctId;
         self.people.distinctId = distinctId;
         if ([self.people.unidentifiedQueue count] > 0) {
