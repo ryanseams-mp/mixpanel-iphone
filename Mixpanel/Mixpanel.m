@@ -91,6 +91,7 @@
 @property (nonatomic, weak) Mixpanel *mixpanel;
 @property (nonatomic, strong) NSMutableArray *unidentifiedQueue;
 @property (nonatomic, copy) NSString *distinctId;
+@property (nonatomic, copy) NSString *alias;
 @property (nonatomic, strong) NSDictionary *automaticPeopleProperties;
 
 - (instancetype)initWithMixpanel:(Mixpanel *)mixpanel;
@@ -163,6 +164,7 @@ static Mixpanel *sharedInstance = nil;
         self.miniNotificationBackgroundColor = nil;
 
         self.distinctId = [self defaultDistinctId];
+        self.alias = nil;
         self.superProperties = [NSMutableDictionary dictionary];
         self.telephonyInfo = [[CTTelephonyNetworkInfo alloc] init];
         self.automaticProperties = [self collectAutomaticProperties];
@@ -352,7 +354,7 @@ static __unused NSString *MPURLEncode(NSString *s)
         return;
     }
     dispatch_async(self.serialQueue, ^{
-        if (distinctId != self.distinctId) {
+        if (distinctId != self.distinctId && distinctId != self.alias) {
             self.shownSurveyCollections = [NSMutableSet set];
             self.shownNotifications = [NSMutableSet set];
             self.decideResponseCached = NO;
@@ -384,6 +386,7 @@ static __unused NSString *MPURLEncode(NSString *s)
         MixpanelError(@"%@ create alias called with empty distinct id: %@", self, distinctID);
         return;
     }
+    self.alias = alias;
     [self track:@"$create_alias" properties:@{ @"distinct_id": distinctID, @"alias": alias }];
 }
 
